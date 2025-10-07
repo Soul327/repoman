@@ -8,6 +8,7 @@ import subprocess
 def cloneRepo(url, accessToken, path = "repos"):
 	index = url.index("github.com")
 	fullURL = url[:index] + accessToken + "@" + url[index:]
+	print(fullURL)
 
 	result = subprocess.run(
 		['git', 'clone', fullURL],
