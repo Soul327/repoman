@@ -55,6 +55,9 @@ repoPath = ""
 accessToken = None
 secrets = os.environ.get('ATTI-SECRETS')
 
+os.makedirs("repos", exist_ok=True)
+os.makedirs("secrets", exist_ok=True)
+
 # Load access token
 with open("secrets/github-personal-access-token.txt", "r") as file:
 	accessToken = file.read()
@@ -77,20 +80,3 @@ match sys.argv[1]:
 		else:
 			# Update individual
 			pass
-
-# repoInfo = {
-# 	"accessToken": accessToken,
-# 	"url": "https://github.com/ATTI-Corp/utilities"
-# }
-
-# status()
-# cloneRepo(
-# 	path = "repos",
-# 	url = repoInfo["url"],
-# 	accessToken = repoInfo["accessToken"]
-# )
-
-
-# updateRepo(
-# 	path = "repos/utilities"
-# )
