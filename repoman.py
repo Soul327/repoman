@@ -61,7 +61,7 @@ os.makedirs("secrets", exist_ok=True)
 
 # Load access token
 with open("secrets/github-personal-access-token.txt", "r") as file:
-	accessToken = file.read()
+	accessToken = file.read().strip()
 
 if len(sys.argv) <= 1:
 	showHelp()
