@@ -38,7 +38,7 @@ def status():
 
 
 def func_clone():
-	if len(sys.argv) != 2:
+	if len(sys.argv) != 3:
 		print("Error")
 	cloneRepo(
 		url = sys.argv[2],
