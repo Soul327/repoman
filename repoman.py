@@ -5,10 +5,9 @@ import sys
 import os
 import subprocess
 
-def cloneRepo(url, accessToken, path = "repos"):
+def cloneRepo(url, accessToken, path = "repos", repoName = None):
 	index = url.index("github.com")
 	fullURL = url[:index] + accessToken + "@" + url[index:]
-	print(fullURL)
 
 	result = subprocess.run(
 		['git', 'clone', fullURL],
@@ -18,10 +17,44 @@ def cloneRepo(url, accessToken, path = "repos"):
 	)
 	print(result.stdout)
 
+	if repoName == None: return
+
+	requirementsPath = os.path.join("requirements.txt")
+	if os.path.exists(requirementsPath) == False:
+		return
+	
+	# Make a .venv
+	result = subprocess.run(
+		['python3', '-m', 'venv', '.venv'],
+		cwd = os.path.join(path, repoName),
+		capture_output = True,
+		text = True
+	)
+	print(result.stdout)
+
+	# Update the requirements.txt
+	result = subprocess.run(
+		['.venv/bin/pip', 'install', '-r', 'requirements.txt'],
+		cwd = os.path.join(path, repoName),
+		capture_output = True,
+		text = True
+	)
+	print(result.stdout)
+
 
 def updateRepo(path):
+	# Update the repo
 	result = subprocess.run(
 		['git', 'pull', 'origin', 'main'],
+		cwd = path,
+		capture_output = True,
+		text = True
+	)
+	print(result.stdout)
+
+	# Update the requirements.txt
+	result = subprocess.run(
+		['.venv/bin/pip', 'install', '-r', 'requirements.txt'],
 		cwd = path,
 		capture_output = True,
 		text = True
@@ -39,11 +72,16 @@ def status():
 
 
 def func_clone():
-	if len(sys.argv) != 3:
-		print("Error")
+	if len(sys.argv) != 3: print("Error")
+	url = sys.argv[2]
+
+	name = url[url.rindex("/")+1:]
+	print(name)
+
 	cloneRepo(
-		url = sys.argv[2],
-		accessToken = accessToken
+		url = url,
+		accessToken = accessToken,
+		repoName = name
 	)
 
 def func_update():
